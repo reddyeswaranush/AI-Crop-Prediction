@@ -79,9 +79,3 @@ Crop recommendations saved to crop_suggestions.txt
 - This repository is provided as-is. Include your preferred license if you want to open-source it (e.g., MIT).
 
 ---
-If you want, I can:
-- Add a small CLI wrapper with argument parsing.
-- Refactor the script to read configuration from environment or a config file.
-- Add unit tests for the helper functions.
-
-Let me know which you'd like next.
