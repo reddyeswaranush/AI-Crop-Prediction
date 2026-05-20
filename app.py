@@ -185,7 +185,7 @@ For each crop provide:
 """
     try:
         response = client.models.generate_content(
-            model="gemini-1.0-flash",
+            model="gemini-2.0-flash",
             contents=prompt
         )
         return response.text
