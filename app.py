@@ -36,9 +36,11 @@ def geocode_nominatim(pincode):
     url = "https://nominatim.openstreetmap.org/search"
 
     params = {
-        "q": pincode,
+        "postalcode": pincode,
+        "country": "India",
         "format": "json"
     }
+
     try:
 
         r = requests.get(
@@ -47,9 +49,11 @@ def geocode_nominatim(pincode):
             headers={"User-Agent": "CropAI"},
             timeout=20
         )
+
         data = r.json()
 
         if data:
+
             return [
                 float(data[0]["lat"]),
                 float(data[0]["lon"])
@@ -58,6 +62,7 @@ def geocode_nominatim(pincode):
         return None
 
     except:
+
         return None
 
 # SOIL
