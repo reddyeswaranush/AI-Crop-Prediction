@@ -31,8 +31,11 @@ kerala_soil_map = {
 }
 
 # GEO
+import time
+
 def geocode_nominatim(pincode):
     try:
+        time.sleep(1)  # Nominatim rate limit fix
         url = "https://nominatim.openstreetmap.org/search"
         params = {
             "q": f"{pincode}, India",
@@ -42,7 +45,7 @@ def geocode_nominatim(pincode):
         r = requests.get(
             url,
             params=params,
-            headers={"User-Agent": "CropAI/1.0 eswar@nitag.ac.in"},
+            headers={"User-Agent": "CropAI/1.0"},
             timeout=20
         )
         data = r.json()
