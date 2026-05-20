@@ -1,12 +1,12 @@
 import streamlit as st
 import requests
 from datetime import datetime, timedelta
-import google.generativeai as genai
+from google import genai
 
 # API
-genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-
-model = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(
+    api_key=st.secrets["GOOGLE_API_KEY"]
+)
 
 # PAGE
 st.set_page_config(
@@ -178,8 +178,15 @@ For each crop provide:
 - Profit range
 - Farming tips
 """
-    response = model.generate_content(prompt)
-    return response.text
+    try:
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=prompt
+        )
+        return response.text
+    
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 # UI
 pincode = st.text_input("Enter Pincode")
