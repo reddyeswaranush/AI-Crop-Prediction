@@ -32,38 +32,52 @@ kerala_soil_map = {
 
 # GEO
 def geocode_nominatim(pincode):
-
-    url = "https://nominatim.openstreetmap.org/search"
-
-    params = {
-        "postalcode": pincode,
-        "country": "India",
-        "format": "json"
-    }
-
     try:
-
+        r = requests.get(
+            f"https://api.postalpincode.in/pincode/{pincode}",
+            timeout=20
+        )
+        data = r.json()
+        if data and data[0]["Status"] == "Success":
+            district = data[0]["PostOffice"][0]["District"]
+            state = data[0]["PostOffice"][0]["State"]
+            url = "https://nominatim.openstreetmap.org/search"
+            params = {
+                "q": f"{district}, {state}, India",
+                "format": "json"
+            }
+            r2 = requests.get(
+                url,
+                params=params,
+                headers={"User-Agent": "CropAI"},
+                timeout=20
+            )
+            data2 = r2.json()
+            if data2:
+                return [float(data2[0]["lat"]), float(data2[0]["lon"])]
+    except:
+        pass
+        
+    try:
+        url = "https://nominatim.openstreetmap.org/search"
+        params = {
+            "postalcode": pincode,
+            "country": "India",
+            "format": "json"
+        }
         r = requests.get(
             url,
             params=params,
             headers={"User-Agent": "CropAI"},
             timeout=20
         )
-
         data = r.json()
-
         if data:
-
-            return [
-                float(data[0]["lat"]),
-                float(data[0]["lon"])
-            ]
-
-        return None
-
+            return [float(data[0]["lat"]), float(data[0]["lon"])]
     except:
+        pass
 
-        return None
+    return None
 
 # SOIL
 def get_soil(pincode):
